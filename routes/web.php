@@ -1,8 +1,12 @@
 <?php
 
+use App\Http\Controllers\ClassroomPeopleController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TopicsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ClassworkController;
 use App\Http\Controllers\ClassroomsController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\JounClassroomController;
 
 /*
@@ -51,11 +55,18 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('/classrooms', ClassroomsController::class);
 
-    Route::resource('/topics', TopicController::class);
-    Route::resource('classroom.classworks', ClassworkController::class);
+    Route::resource('/topics', TopicsController::class);
 
+    Route::resource('classrooms.classworks', ClassworkController::class);
+    Route::put('classrooms/{classroom}/classworks/{classwork}/edit', [ClassworkController::class,'edit']);
 
+    Route::get('/classrooms/{classroom}/people', [ClassroomPeopleController::class,'index'])
+    ->name('classrooms.people');
 
+    Route::delete('/classrooms/{classroom}/people', [ClassroomPeopleController::class,'destroy'])
+    ->name('classrooms.people.destroy');
+
+    Route::post('comments', [CommentController::class, 'store'])->name('comments.store');
 });
 
 

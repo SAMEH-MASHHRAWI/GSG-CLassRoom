@@ -12,10 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('classroom_user', function (Blueprint $table) {
-            $table->foreignId('classroom_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('classroom_id')
+            ->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')
+            ->constrained()->cascadeOnDelete();
             $table->enum('role',['studant','teacher'])->default('studant');
             $table->timestamp('created_at');
+            $table->enum('status',['assigued','draft','submited','returned'])
+            ->default('assigued');
             $table->primary('classroom_id','user_id');
 
         });

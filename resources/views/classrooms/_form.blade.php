@@ -1,4 +1,5 @@
-            <x-form.floating-control name="name">
+<x-alert name="error" id="error" class="alert-danger" />
+          <x-form.floating-control name="name">
                 <x-slot:label>
                     <label for="name">ClassRoom Name</label>
                 </x-slot:label>

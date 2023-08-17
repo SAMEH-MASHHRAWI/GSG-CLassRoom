@@ -11,7 +11,7 @@ class ClassroomObserver
     /**
      * Handle the Classroom "created" event.
      */
-    public function created(Classroom $classroom): void
+    public function creating(Classroom $classroom): void
     {
             $classroom->code = Str::random(8);
             $validated['user_id'] = Auth::id();
@@ -24,7 +24,7 @@ class ClassroomObserver
     {
         //
     }
-    
+
 
     /**
      * Handle the Classroom "deleted" event.
@@ -45,7 +45,7 @@ class ClassroomObserver
     public function restored(Classroom $classroom): void
     {
                     $classroom->status = 'active';
-            $classroom->save();
+                     $classroom->save();
     }
 
     /**

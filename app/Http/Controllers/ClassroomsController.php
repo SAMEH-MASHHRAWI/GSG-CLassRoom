@@ -67,24 +67,10 @@ class ClassroomsController extends Controller
 
         if ($request->hasfile('cover_image')) {
             $file = $request->file('cover_image');
-
             $path = Classroom::uploadeCoverImage($file);
-
-
-            // $request->merge([
-            //     'cover_image_path' => $path
-            // ]);
             $validated['cover_image_path'] = $path;
         }
-        // $request->merge([
-        //     'code' => Str::random(8)
-        // ]);
-
-        // $validated['code'] = Str::random(8);
-        // $validated['user_id']=Auth::id();
-
             DB::beginTransaction();
-
             try{
             $classroom = Classroom::create($validated);
             $classroom->join(Auth::id(), 'teacher');
@@ -92,7 +78,8 @@ class ClassroomsController extends Controller
             DB::commit();
             }catch(QueryException $e){
                 DB::rollBack();
-                return back()->with('error',$e->getMessage())
+                return back()
+                ->with('error',$e->getMessage())
                 ->withInput();
             }
 
@@ -106,7 +93,7 @@ class ClassroomsController extends Controller
     {
 
         // $classroom = Classroom::withTrashed()->findOrFail($id);
-        $initation_link=URL::temporarySignedRoute('classrooms.join',now()->addHours(3), [
+        $initation_link=URL::signedRoute('classrooms.join', [
                 'classroom'=> $classroom->id,
                 'code'=> $classroom->code,
         ]);
@@ -184,8 +171,7 @@ class ClassroomsController extends Controller
         $classroom->forceDelete();
         Classroom::deleteCoverImage($classroom->cover_image_path);
 
-            return redirect()
-            ->route('classrooms.trashed')
+            return view('classrooms.index')
             ->with('success', "Classroom ({$classroom->name}) deleted foever");
     }
 }

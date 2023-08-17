@@ -20,7 +20,7 @@ class JounClassroomController extends Controller
             ->findOrFail($id);
 
         try {
-            $this->exists($id, Auth::id());
+            $this->exists($classroom, Auth::id());
         } catch (Exception $e) {
             return redirect()->route('classrooms.show', $id);
         }
@@ -41,20 +41,22 @@ class JounClassroomController extends Controller
             ->findOrFail($id);
 
         try {
-            $this->exists($id, Auth::id());
+            $classroom->join(Auth::id(), $request->input('role', 'studant'));
         } catch (Exception $e) {
             return redirect()->route('classrooms.show', $id);
         }
-        $classroom->join(Auth::id(),$request->input('role','studant'));
-       
+
         return redirect()->route('classrooms.show', $id);
     }
-    protected function exists($classroom_id, $user_id)
+    protected function exists(Classroom $classroom, $user_id)
     {
-        $exists = DB::table('classroom_user')
-            ->where('classroom_id', $classroom_id)
-            ->where('user_id', Auth::id())
-            ->exists();
+        $exists = $classroom->users()->where('id','=',$user_id)->exists();
+
+        // belowe the same thing at up but belowe by querybilduer
+            // $exists = DB::table('classroom_user')
+            // ->where('classroom_id', $classroom_id)
+            // ->where('user_id', Auth::id())
+            // ->exists();
         if ($exists) {
             throw new Exception('User aleready joined the classroom');
         }
