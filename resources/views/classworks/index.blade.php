@@ -16,10 +16,20 @@
                             </ul>
                     </div>
 
-                @forelse ($classworks as $group)
-                {{-- <h3>{{$group->first()->topic}} </h3> --}}
+                    <form action="{{URL::current()}}"method="get" class="row row-cols-lg-auto g-3 align-items-center">
+                        <div class="co-12">
+                            <input type="text" name="search" class="form-control">
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-primary m-2" type="submit">find</button>
+                        </div>
+                    </form>
+
+
+
                     <div class="accordion accordion-flush" id="accordionFlushExample">
-                    @foreach ($group as $classwork)
+                    @foreach ($classworks as $classwork)
+
                         <div class="accordion-item">
                             <h2 class="accordion-header">
                               <button class="accordion-button collapsed" type="button"
@@ -33,7 +43,7 @@
                                      data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body">
                                     {{ $classwork->description }}
-                                    <div>
+                                    <div>   
 
                                         <a class="btn btn-sm btn-outline-dark" href="{{ route('classrooms.classworks.edit', [$classwork->id , $classwork->id])}}">
                                                 Edit</a>
@@ -41,10 +51,11 @@
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+                @endforeach
+
                     </div>
-                     @empty
-                        {{-- <p class="text-center fs-3 "> No classworks found</p> --}}
-               @endforelse
-    </div>
+
+                </div>
+    {{ $classworks->withQueryString()->links() }}
+
 </x-main-layout>

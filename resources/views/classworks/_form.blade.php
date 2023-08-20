@@ -69,7 +69,7 @@
                         <select name="topic_id" id="topic_id" class="form-select">
                             <option value="">No Topic</option>
                                 @foreach ($classroom->topics as $topic)
-                                <option @selected($topic->id == $classwork->topic->id) value="{{$topic->id}}">{{$topic->name}}</option>
+                                <option @selected($topic->id == $classwork->topic_id) value="{{$topic->id}}">{{$topic->name}}</option>
                                 @endforeach
                             </select>
                         </x-form.floating-control>

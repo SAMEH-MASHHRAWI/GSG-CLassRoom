@@ -69,7 +69,7 @@ class Classroom extends Model
 
     public function topics(): HasMany
     {
-        return $this->hasMany(Topic::class, 'topic_id', 'id');
+        return $this->hasMany(Topic::class, 'classroom_id', 'id');
     }
     public function users()
     {

@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use App\Enums\ClassworkType;
 use App\Models\Topic;
 use App\Models\Comment;
+use App\Enums\ClassworkType;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -37,6 +38,18 @@ class Classwork extends Model
             if(!$classwork->published_at){
                 $classwork->published_at =now();
             }
+        });
+    }
+
+    public function scopeFilter(Builder $builder ,$filters) {
+        $builder->when($filters['search'] ??' ' , function($builder,$value){
+            $builder->where(function($builder)use($value){
+                $builder->where('title', 'LIKE', "%{$value}%")
+                ->orwhere('description', 'LIKE', "%{$value}%");
+            });
+        })
+        ->when($filters['type'] ?? '', function ($builder, $value) {
+            $builder->where('type', 'LIKE', "%{$value}%");
         });
     }
 

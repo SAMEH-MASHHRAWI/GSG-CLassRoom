@@ -18,17 +18,19 @@ class ClassworkController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Classroom $classroom)
+    public function index(Request $request, Classroom $classroom)
     {
 
-        $classworks = $classroom->classworks()
+        // $classworks = $classroom->classworks()
+        $classworks=$classroom->classworks()
         ->with('topic')
+        // ->filter($request->$query())
         ->orderBy('published_at')
-        ->get();
+        ->paginate(5);
 
         return view('classworks.index',[
             'classroom'=>$classroom,
-            'classworks'=>$classworks->groupBy('topic_id'),
+            'classworks'=>$classworks,
         ]);
     }
 
@@ -52,6 +54,7 @@ class ClassworkController extends Controller
         $type=$this->getType($request);
 
         $classwork=new Classwork();
+
 
         return view('classworks.create',compact('classroom','classwork','type'));
     }
@@ -88,7 +91,7 @@ class ClassworkController extends Controller
             return back()->with('error',$e->getMessage());
         }
 
-// dd('classworks');
+
         return redirect()->route('classrooms.index',$classroom->id)
         ->with('success','Classwork Created!');
         // Classroom::create($request->all() );
