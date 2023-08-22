@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Topic;
 use App\Models\Comment;
 use App\Enums\ClassworkType;
@@ -10,12 +11,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+
 class Classwork extends Model
 {
     use HasFactory;
-    const TYPE_ASSIGNMENT='assignment';
-    const TYPE_MATERIAL='matirial';
-    const TYPE_QUESTION='question';
+    const TYPE_ASSIGNMENT=ClassworkType::ASSIGNMENT;
+    const TYPE_MATERIAL=ClassworkType::MATIRIAL;
+    const TYPE_QUESTION=ClassworkType::QUSTION;
 
     const STATUS_PUBLISHED='pubished';
     const STATUS_DRAFT='draft';
@@ -53,6 +55,7 @@ class Classwork extends Model
         });
     }
 
+
     public function getPublishedDateAttribute()
     {
         if($this->published_at){
@@ -83,4 +86,9 @@ class Classwork extends Model
     {
         return $this->morphMany(Comment::class, 'commentable')->latest();
     }
+    public function submissions()
+    {
+        return $this->hasMany(Submission::class);
+    }
+
 }

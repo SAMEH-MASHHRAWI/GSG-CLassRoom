@@ -85,10 +85,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
-    // public function comments(){
-
-    //     return $this->hasMany(comment::class);
-    // }
+    public function submissions()
+    {
+        return $this->hasMany(Submission::class);
+    }
     /**
      * The attributes that should be cast.
      *

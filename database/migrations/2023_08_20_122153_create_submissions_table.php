@@ -11,19 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('classwork_user', function (Blueprint $table) {
+        Schema::create('submissions', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('classwork_id')
             ->constrained()
             ->cascadeOnDelete();
             $table->foreignId('user_id')
             ->constrained()
             ->cascadeOnDelete();
-            $table->float('grade')->nullable();
-            $table->timestamp('submited_at')->nullable();
-            $table->enum('status',['assigned','draft','submitted','returned'])
-            ->default('assigned');
-            $table->timestamp('created_at')->nullable();
-            $table->primary(['classwork_id','user_id']);
+            $table->string('content');
+            $table->enum('type',['link','file']);
+            $table->timestamps();
         });
     }
 
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('classwork_user');
+        Schema::dropIfExists('submissions');
     }
 };
