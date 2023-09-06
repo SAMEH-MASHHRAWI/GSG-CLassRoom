@@ -76,11 +76,11 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::post('classworks/{classwork}/submissions', [SubmissionController::class, 'store'])
-    ->name('submissions.store')
-    ->middleware('can:submission.create,classwork');
+    ->name('submissions.store');
 
     Route::post('submissions/{submission}/file', [SubmissionController::class, 'file'])
     ->name('submissions.file');
+    
 });
 
 

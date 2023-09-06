@@ -20,7 +20,7 @@ return new class extends Migration
             $table->timestamp('created_at');
             $table->enum('status',['assigued','draft','submited','returned'])
             ->default('assigued');
-            $table->primary('classroom_id','user_id');
+            $table->primary(['classroom_id','user_id']);
 
         });
     }

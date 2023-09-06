@@ -4,7 +4,7 @@
                 <h1>Classroom Details</h1>
                     <h2>{{$classroom->name}} (#{{$classroom->id}})</h2>
                     <h3>Classworks
-        @can('classworks.create', [$classroom])
+            @can('create',['App\Models\Classwork', $classroom])
                     <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 + Create
@@ -62,6 +62,13 @@
                     </div>
 
                 </div>
+
     {{ $classworks->withQueryString()->appends(['v'=>1])->links('vendor.pagination.bootstrap-5') }}
+
+  @push('scripts')
+        <script>
+            classroomId = "$classwork->classroom_id";
+        </script>
+    @endpush
 
 </x-main-layout>

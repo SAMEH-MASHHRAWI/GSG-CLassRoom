@@ -16,8 +16,8 @@ class   ClassworkUser extends Pivot
     {
         return $this;
     }
-    public function setCreatedAt($value)
-    {
-        return $value;
-    }
+    // public function setCreatedAt($value)
+    // {
+    //     return $value;
+    // }
 }

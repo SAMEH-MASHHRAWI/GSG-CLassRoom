@@ -35,10 +35,12 @@ class ClassroomsController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->authorizeResource(Classroom::class);
     }
 
     public function index(Request $request): Renderable
     {
+        // $this->authorize('view-Any', Classroom::class);
         $classrooms = Classroom::active()
         ->recent()
         ->orderBy('created_at','DESC')

@@ -3,10 +3,13 @@
 namespace App\Providers;
 
 use App\Models\Post;
+use App\Models\User;
 use App\Models\Classwork;
+use Illuminate\Support\Facades\App;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Pagination\Paginator;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,11 +26,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Paginator::useBootstrapFive();
-        
+        // ResourceCollection::withoutWrapping();
+
+        App::setlocale('ar');
+
+        Paginator::defaultView('vendor.pagination.bootstrap-5');
+        Paginator::defaultSimpleView('vendor.pagination.bootstrap-5');
+
         Relation::enforceMorphMap([
-            'classwork'=>Classwork::class,
             'post'=>Post::class,
+            'classwork' => Classwork::class,
+            'user'=>User::class,
+
         ]);
     }
 }

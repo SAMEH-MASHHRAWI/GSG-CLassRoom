@@ -15,14 +15,13 @@
                                 <div class="form-floating mb-3" value="{{$classwork->title}}" name="title">
                                 <label for="title">Title</label>
                                 <br><br>
-                            <x-form.input  name="title" value="{{$classwork->sction}}"  placeholder="title"/>
+                            <x-form.input  name="title" :value="$classwork->sction"  placeholder="title"/>
                         <x-form.error name="sction" />
                         </div>
-                        <div class="form-floating mb-3" value="{{$classwork->description}}" name="description">
+                        <div class="form-floating mb-3" :value="$classwork->description" name="description">
                                 <label for="description">Description</label>
                                 <br><br>
-
-                            <x-form.texteara  name="description" value="" placeholder="description"/>
+                            <x-form.texteara id="#description" name="description" value="" placeholder="description"/>
                         <x-form.error name="description" />
                         </div>
                     </div>
@@ -76,3 +75,27 @@
                     </div>
                 </div>
             </div>
+
+         @push('script')
+         <head>
+            <script>
+        tinymce.init({
+            selector: '#description',
+            plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [{
+                    value: 'First.Name',
+                    title: 'First Name'
+                },
+                {
+                    value: 'Email',
+                    title: 'Email'
+                },
+            ],
+            ai_request: (request, respondWith) => respondWith.string(() => Promise.reject(
+                "See docs to implement AI Assistant"))
+        });
+    </script>
+        @endpush

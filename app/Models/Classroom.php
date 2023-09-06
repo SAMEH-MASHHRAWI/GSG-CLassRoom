@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Classroom extends Model
 {
 
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     public static string $disk = 'public';
 
@@ -33,6 +33,12 @@ class Classroom extends Model
         'theme',
         'cover_image_path',
         'user_id'
+    ];
+    protected $appends=[
+        'cover_image_url',
+    ];
+    protected $hidden=[
+        'cover_image_path',
     ];
     protected static function booted()
     {
@@ -64,13 +70,17 @@ class Classroom extends Model
 
     public function Classroom(): HasMany
     {
-        return $this->hasMany(Classroom::class, 'classroom_id', 'id');
+        return $this->hasMany(Classroom::class, 'id');
     }
 
     public function topics(): HasMany
     {
         return $this->hasMany(Topic::class, 'classroom_id', 'id');
     }
+    // public function user()
+    // {
+    //     return $this->belongsTo(User::class);
+    // }
     public function users()
     {
         return  $this->belongsToMany(
@@ -80,14 +90,25 @@ class Classroom extends Model
             'user_id',
             'id',
             'id',
-        )->withPivot(['role','created_at']);
+        )->withPivot(['role', 'created_at']);
     }
-    public function teachers(){
-        return $this->users()->wherePivot('role','=','teacher');
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
-    public function studants ()
+
+    public function teachers()
+    {
+        return $this->users()->wherePivot('role', '=', 'teacher');
+    }
+    public function studants()
     {
         return $this->users()->wherePivot('role', '=', 'studant');
+    }
+    public function streams()
+    {
+        return $this->hasMany(Stream::class)->latest();
     }
 
     public function getRouteKeyName()
@@ -104,18 +125,20 @@ class Classroom extends Model
     }
     public static  function deleteCoverImage($path)
     {
-        if(!$path||Storage::disk(Classroom::$disk)->exists($path)){
+        if (!$path || Storage::disk(Classroom::$disk)->exists($path)) {
             return;
         }
         return Storage::disk(Classroom::$disk)->delete($path);
     }
 
-    public function scopeActive(Builder $query){
-        $query->where('status','=','active');
+    public function scopeActive(Builder $query)
+    {
+        $query->where('status', '=', 'active');
     }
+
     public function classworks(): HasMany
     {
-        return $this->hasMany(Classwork::class,'classroom_id','id');
+        return $this->hasMany(Classwork::class, 'classroom_id', 'id');
     }
 
     public function scopeRecent(Builder $query)
@@ -123,24 +146,24 @@ class Classroom extends Model
         $query->orderBy('updated_at', 'DESC');
     }
 
-    public function scopStatus(Builder $query ,$status='active')
+    public function scopStatus(Builder $query, $status = 'active')
     {
-        $query->where('status','=',$status);
+        $query->where('status', '=', $status);
     }
 
-    public function join($user_id,$role='studant')
+    public function join($user_id, $role = 'studant')
     {
         $exists = $this->users()->where('id', '=', $user_id)->exists();
         if ($exists) {
             throw new Exception('User aleready joined the classroom');
         }
 
-        return $this->users()->attach([$user_id],[
-            'role'=>$role,
-            'created_at'=>now()
+        return $this->users()->attach([$user_id], [
+            'role' => $role,
+            'created_at' => now()
         ]);
 
-// نفس الي فوقها بس الي تحت كويري بلدر
+        // نفس الي فوقها بس الي تحت كويري بلدر
         // return DB::table('classroom_user')->insert([
         //     'classroom_id'=>$this->id,
         //     'user_id'=>$user_id,
@@ -149,7 +172,8 @@ class Classroom extends Model
         // ]);
     }
 
-    public function getnameAttribute($value){
+    public function getnameAttribute($value)
+    {
         return strtoupper($value);
     }
 
@@ -164,6 +188,4 @@ class Classroom extends Model
     {
         return route('classrooms.show', $this->id);
     }
-
-
 }

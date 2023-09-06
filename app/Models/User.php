@@ -6,11 +6,14 @@ namespace App\Models;
 
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use App\Models\Profil;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail , HasLocalePreference
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -55,7 +58,7 @@ class User extends Authenticatable
     public function classrooms()
     {
         return  $this->belongsToMany(
-            User::class,
+            Classroom::class,
             'classroom_user',
             'classroom_id',
             'user_id',
@@ -89,6 +92,32 @@ class User extends Authenticatable
     {
         return $this->hasMany(Submission::class);
     }
+    public function Profil()
+    {
+        return $this->hasOne(Profil::class, 'user_id', 'id')
+            ->withDefault();
+    }
+
+    public function routeNotificationForMail($notification=null){
+        return $this->email_address;
+    }
+    public function routeNotificationForVonage($notification = null)
+    {
+        return '+970592421537';
+    }
+    public function routeNotificationForHadara($notification = null)
+    {
+        return '+970592421537';
+    }
+    public function receivesBroadcastNotificationsOn()
+    {
+        return 'Notifications.' .$this->id;
+    }
+    public function preferredLocale()
+    {
+        return $this->profil->locale;
+    }
+
     /**
      * The attributes that should be cast.
      *

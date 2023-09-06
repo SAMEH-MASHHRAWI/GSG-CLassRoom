@@ -1,7 +1,7 @@
-<x-main-layout title="CLassrooms" class="">
+<x-main-layout title="{{__('Classrooms')}}" class="">
 
     <div class="container">
-                    <h1>Classroom</h1>
+                    <h1>{{__('Classrooms')}}</h1>
                         <x-alert  name="success" id="success" class="alert-success"/>
                         <x-alert  name="error" id="danger" class="alert-danger"/>
                         <div class="row">
@@ -15,12 +15,12 @@
                                     <p class="card-text">{{$classroom->section}}</p>
                                 <div class="d-flex justify-content-between" >
 
-                                    <a href="{{$classroom->url }} " class="btn btn-primary">View</a>
-                                    <a href="{{route('classrooms.edit',$classroom->id)}} " class="btn btn-sm btn-dark ">Edit</a>
+                                    <a href="{{$classroom->url }} " class="btn btn-primary">{{__('View')}}</a>
+                                    <a href="{{route('classrooms.edit',$classroom->id)}} " class="btn btn-sm btn-dark ">{{__('Edit')}}</a>
                                     <form action="{{route('classrooms.destroy',$classroom->id)}}" method="post">
                                     @csrf
                                         @method( 'delete')
-                                        <button  class="btn btn-sm btn-danger" >Delete</button>
+                                        <button  class="btn btn-sm btn-danger">{{__('Delete')}}</button>
                                 </div>
                                 </form>
                                 </div>
