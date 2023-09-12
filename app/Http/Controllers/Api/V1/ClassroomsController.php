@@ -16,6 +16,9 @@ class ClassroomsController extends Controller
      */
     public function index()
     {
+            return (!Auth::guard('sanctum')->user()->tokenCan('classrooms.read')){
+            abort(403);
+             }
         $classrooms= Classroom::with('user:id,name','topics')
         ->withCount('studants as studants')
         ->get(3);
@@ -51,6 +54,9 @@ class ClassroomsController extends Controller
      */
     public function show(Classroom $classroom)
     {
+            return (!Auth::guard('sanctum')->user()->tokenCan('classrooms.read')){
+            abort(403);
+             }
         $classroom->load('user')->loadCount('studants');
         return new ClassroomResource($classroom);
     }
@@ -60,6 +66,9 @@ class ClassroomsController extends Controller
      */
     public function update(Request $request, Classroom $classroom)
     {
+            return (!Auth::guard('sanctum')->user()->tokenCan('classrooms.uodate')){
+            abort(403);
+             }
         $request->validate([
             'name'=>['sometimes', 'required',"unique:classrooms,name,$classroom->id"],
             'section'=>['sometimes', 'required'],
@@ -77,6 +86,9 @@ class ClassroomsController extends Controller
      */
     public function destroy(string $id)
     {
+            return (!Auth::guard('sanctum')->user()->tokenCan('classrooms.delete')){
+            abort(403,'You Cannt Delete this Classroom');
+             }
         Classroom::destroy($id);
         return Response::json([],204);
     }

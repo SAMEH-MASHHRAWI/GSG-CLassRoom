@@ -5,18 +5,27 @@ namespace App\Http\Controllers\Api\V1;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use DragonCode\Contracts\Cashier\Auth\Auth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Response;
 
 class AccessTokenController extends Controller
 {
+
+    public function index()
+    {
+        if (!Auth::guard('sanctum')->user()->tokenCan('Calssrooms.read')) {
+            abort(403);
+        }
+        return Auth::guard('sanctum')
+            ->user()->tokens;
+    }
     public function store(Request $request)
     {
         $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
-            'device_name' => ['sometimes', 'nullable'],
+            'device_name' => ['sometimed', 'nullable'],
             'abilities' => ['array']
         ]);
 
@@ -39,5 +48,26 @@ class AccessTokenController extends Controller
         return Response::json([
             'message' => __('Invalid Credentials.')
         ], 401);
+    }
+
+    public function destroy($id = null)
+    {
+        $user = Auth::guard('sanctum')->user();
+
+        if ($id) {
+            //Revoke
+            if ($id == 'current') {
+                $user->currentAccessToken()
+                    ->delete();
+            } else {
+                $user->tokens()
+                    ->findOrFail($id)
+                    ->delete();
+            }
+        } else {
+            // Logout from all devices
+            $user->tokens()
+                ->delete();
+        }
     }
 }

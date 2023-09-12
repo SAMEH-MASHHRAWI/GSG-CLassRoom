@@ -4,8 +4,8 @@
                     <h1>{{__('Classrooms')}}</h1>
                         <x-alert  name="success" id="success" class="alert-success"/>
                         <x-alert  name="error" id="danger" class="alert-danger"/>
-                        <div class="row">
-
+                        <ul id="classrooms"></ul>
+                <div class="row">
                     @foreach ($classrooms as $classroom)
                         <div class="col-md-3">
                             <div class="card" style="width: 18rem;">
@@ -30,7 +30,16 @@
                         </div>
                 </div>
 
-    @push('js')
-    {{-- <script>alert() </script> --}}
+    @push('scripts')
+    <script>
+        fetch('api/v1/classrooms')
+        .then(res=>res.json())
+        .then(json=>{
+            let ul=document.getElementById('classrooms');
+            for(let i in json){
+                ul.innerHTML += `<li>${json[i].name}ؤ</li>`
+            }
+        })
+    </script>
     @endpush
 </x-main-layout>
