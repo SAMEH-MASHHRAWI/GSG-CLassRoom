@@ -2,21 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Topic extends Model
 {
     use HasFactory;
 
-    public $timestamp = false;
-    protected $fillable=[
-        'name',
-        'classroom',
-        'user_id'
-    ];
-    public function Classworks()
+    public $timestamps = false;
+
+    protected $fillable = [
+        'name', 'classroom_id', 'user_id'
+    ]; // تحديد المسموح (white list)
+
+
+
+    public function classworks(): HasMany
     {
-        return $this->hasMany(Classwork::class, 'topic_id', 'id');
+        return $this->hasMany(classwork::class, 'topic_id', 'id');
     }
 }

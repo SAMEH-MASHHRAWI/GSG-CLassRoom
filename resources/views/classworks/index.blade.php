@@ -4,7 +4,7 @@
                 <h1>Classroom Details</h1>
                     <h2>{{$classroom->name}} (#{{$classroom->id}})</h2>
                     <h3>Classworks
-            @can('create',['App\Models\Classwork', $classroom])
+            {{-- @can('create',['App\Models\Classwork', $classroom]) --}}
                     <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 + Create
@@ -15,7 +15,7 @@
                                 <li><a class="dropdown-item" href="{{route('classrooms.classworks.create' , [$classroom->id, 'type'=>'question'])}}">Question</a></li>
                             </ul>
                     </div>
-            @endcan
+            {{-- @endcan --}}
                 </h3>
                     <form action="{{URL::current()}}"method="get" class="row row-cols-lg-auto g-3 align-items-center">
                         <div class="co-12">

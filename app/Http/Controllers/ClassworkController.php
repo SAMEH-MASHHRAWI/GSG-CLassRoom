@@ -67,7 +67,7 @@ class ClassworkController extends Controller
         //     abort(403);
         // }
         // dd('auth::user', $classroom);
-        $this->authorize('create', [Classwork::class, $classroom]);
+        // $this->authorize('create', [Classwork::class, $classroom]);
 
         $type = $this->getType($request)->value;
         $classwork = new Classwork();
@@ -79,7 +79,7 @@ class ClassworkController extends Controller
         // if (Gate::denies('classworks.create', [$classroom])) {
         //     abort(403);
         // }
-        $this->authorize('create', [Classwork::class, $classroom]);
+        // $this->authorize('create', [Classwork::class, $classroom]);
         $type = $this->getType($request);
 
         $request->validate([

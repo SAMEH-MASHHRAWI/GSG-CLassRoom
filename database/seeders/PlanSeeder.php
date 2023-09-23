@@ -15,37 +15,37 @@ class PlanSeeder extends Seeder
      */
     public function run(): void
     {
-        Plan::insert([
+        Plan::insert(
             [
-                'featured' => 0,
-                'name' => "Free",
-                'price' => 0,
+                [
+                    'name' => 'Free Plan',
+                    'price' => 0,
+                    'featured' => 0
+                ],
+                [
+                    'name' => 'Basic Plan',
+                    'price' => 2000,
+                    'featured' => 1
+                ],
+                [
+                    'name' => 'Pro Plan',
+                    'price' => 8000,
+                    'featured' => 1
+                ]
+            ]
+        );
 
-            ],
-            [
-               'featured'=>1,
-                'name' => "Basic Plan",
-                'price' => 2000,
-
-            ],
-            [
-                'featured' => 0,
-                'name' => "Pro Plan",
-                'price' => 8000,
-
-
-            ],
-        ]);
         Feature::insert([
             [
-                'name' => 'Classroom #',
+                'name' => 'Classrooms #',
                 'code' => 'classrooms-count',
             ],
             [
-                'name' => 'studant Per Classroom',
-                'code' => 'classrooms-studants',
-            ],
+                'name' => 'Students Per Classrooms',
+                'code' => 'Classroom-student',
+            ]
         ]);
+
         DB::table('plan_feature')->insert([
             ['plan_id' => 1, 'feature_id' => 1, 'feature_value' => 1],
             ['plan_id' => 1, 'feature_id' => 2, 'feature_value' => 10],

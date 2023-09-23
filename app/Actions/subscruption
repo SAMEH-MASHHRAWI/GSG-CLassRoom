@@ -1,0 +1,14 @@
+<?php
+
+namespace App\Actions;
+
+use App\Models\Subscription;
+
+
+class Createsubscription
+{
+    public function __invoke($data)
+    {
+        return Subscription::forceCreate($data);
+    }
+}

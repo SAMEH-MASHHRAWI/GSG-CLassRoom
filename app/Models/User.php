@@ -92,6 +92,11 @@ class User extends Authenticatable implements MustVerifyEmail , HasLocalePrefere
     {
         return $this->hasMany(Submission::class);
     }
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
     public function Profil()
     {
         return $this->hasOne(Profil::class, 'user_id', 'id')
